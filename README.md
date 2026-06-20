@@ -6,6 +6,50 @@ It locates a task on a configurable lane catalog, selects a lane, aligns the
 planner gate, checks for REAL progress (refusing summary-only runs), and updates
 a persistent global map. JSON-in, JSON-out. Zero hard dependencies.
 
+## Quickstart (30 seconds)
+
+This package is not yet published on PyPI. Install from source:
+
+```bash
+git clone https://github.com/mdalexandre/journey-map-thinking.git
+cd journey-map-thinking
+pip install -e .
+```
+
+Then run:
+
+```bash
+jm run "fix the failing auth test"
+```
+
+Actual output:
+
+```
+Goal relevance: high
+Lane: fix
+Next move: root cause identified
+Gate: test passes
+Can advance now: yes
+honest_scope: PROVISIONAL_JOURNEY_MAP_NO_OUTPUT_QUALITY_GUARANTEE
+```
+
+Python equivalent:
+
+```python
+from journey_map import run
+
+r = run("fix the failing auth test")
+print(r.summary())
+```
+
+## Refuse fake progress
+
+`jm run` is an orientation tool: it tells you which lane you are in and what the
+next concrete move is. It does not record progress. `jm progress` is the progress
+gate and exits non-zero on a summary-only run, requiring at least one real evidence
+signal (changed files, tests added, a release verdict) before `progress_made` is
+set to True.
+
 ## Who this is for
 
 Teams building agent pipelines who want structured state tracking without
@@ -14,19 +58,9 @@ hallucinated progress. The pipeline is a thin layer that:
 - enforces a no-fake-progress gate (exits 1 when no evidence is present),
 - writes append-only history and a readable current position.
 
-## Install
+## Advanced: the full pipeline
 
-```bash
-pip install journey-map-thinking
-```
-
-Optional YAML support:
-
-```bash
-pip install 'journey-map-thinking[yaml]'
-```
-
-## 5-stage CLI pipeline
+### 5-stage CLI pipeline
 
 ```bash
 jm position   --raw raw_goal.txt --output journey_position.json
@@ -38,7 +72,7 @@ jm update      --progress journey_progress_check.json --lane journey_lane.json \
                --output journey_map_update.md
 ```
 
-## Python API
+### Python API
 
 ```python
 from journey_map import position, select_lane, align_gate, check_progress, update_map
@@ -50,6 +84,15 @@ chk  = check_progress(sel, changed_files=["ingestion.py"], tests_added=True)
 md   = update_map(chk, sel)
 print(md)
 ```
+
+### `jm run` flags
+
+| Flag | Meaning |
+|---|---|
+| `jm run "<goal>"` | Print prose orientation to stdout (exit 0). |
+| `--catalog FILE` | Load a custom lane catalog (JSON or YAML). |
+| `--out DIR` | Write `journey_position.json`, `journey_lane.json`, `journey_gate_alignment.json` into DIR. |
+| `--json` | Print machine-readable JSON instead of prose. |
 
 ## Custom lane catalog
 

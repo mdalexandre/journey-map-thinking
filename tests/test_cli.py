@@ -180,6 +180,71 @@ class TestJmProgress:
         assert code == 0
 
 
+class TestJmRunSubcommand:
+    def test_run_exits_0_prose(self) -> None:
+        code, _, _ = run_jm("run", "build a CSV ingestion pipeline")
+        assert code == 0
+
+    def test_run_stdout_contains_lane(self) -> None:
+        code, out, _ = run_jm("run", "build a CSV ingestion pipeline")
+        assert code == 0
+        assert "Lane:" in out
+
+    def test_run_json_flag_exits_0(self) -> None:
+        code, _, _ = run_jm("run", "build a CSV ingestion pipeline", "--json")
+        assert code == 0
+
+    def test_run_json_output_has_required_keys(self) -> None:
+        code, out, _ = run_jm("run", "build a CSV ingestion pipeline", "--json")
+        assert code == 0
+        data = json.loads(out)
+        expected_keys = (
+            "relevance", "lane", "next_move", "target_gate", "can_advance_now", "honest_scope"
+        )
+        for key in expected_keys:
+            assert key in data, f"missing key: {key}"
+
+    def test_run_out_dir_writes_three_files(self, tmp_path: Path) -> None:
+        out_dir = str(tmp_path / "jm_out")
+        code, _, _ = run_jm("run", "build a CSV ingestion pipeline", "--out", out_dir)
+        assert code == 0
+        assert (tmp_path / "jm_out" / "journey_position.json").exists()
+        assert (tmp_path / "jm_out" / "journey_lane.json").exists()
+        assert (tmp_path / "jm_out" / "journey_gate_alignment.json").exists()
+
+    def test_run_out_dir_json_valid(self, tmp_path: Path) -> None:
+        out_dir = str(tmp_path / "jm_out")
+        run_jm("run", "build a CSV ingestion pipeline", "--out", out_dir)
+        for fname in ("journey_position.json", "journey_lane.json", "journey_gate_alignment.json"):
+            data = json.loads((tmp_path / "jm_out" / fname).read_text())
+            assert isinstance(data, dict)
+
+    def test_run_bad_catalog_exits_2(self) -> None:
+        code, _, _ = run_jm("run", "build x", "--catalog", "/nonexistent_catalog_xyz.json")
+        assert code == 2
+
+    def test_run_no_goal_exits_nonzero(self) -> None:
+        code, _, _ = run_jm("run")
+        assert code != 0
+
+    def test_run_appears_in_help(self) -> None:
+        code, out, _ = run_jm("--help")
+        assert code == 0
+        assert "run" in out
+
+    def test_run_does_not_appear_in_progress_exit_code(
+        self, fake_progress_no_evidence_json: Path, tmp_path: Path
+    ) -> None:
+        """Regression guard: jm progress still exits 1 with no evidence."""
+        out_path = tmp_path / "progress.json"
+        code, _, _ = run_jm(
+            "progress",
+            "--lane", str(fake_progress_no_evidence_json),
+            "--output", str(out_path),
+        )
+        assert code == 1
+
+
 class TestJmSeed:
     def test_seed_exits_zero(self, tmp_path: Path) -> None:
         root = tmp_path / "jm_map"

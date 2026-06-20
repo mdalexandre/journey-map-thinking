@@ -19,6 +19,7 @@ completed_milestones.jsonl
 private/
 pipeline_runs/
 .journey_map/
+.runs/
 
 # Optional local-only privacy denylist (never publish the tokens it screens for)
 tests/privacy_denylist.local.txt

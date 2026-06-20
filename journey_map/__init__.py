@@ -36,6 +36,7 @@ from .gate_alignment import align_gate
 from .lanes import LANE_CATALOG, MATCH_PRIORITY, Lane, all_lanes, get_lane, matched_lanes
 from .position import position
 from .progress import check_progress
+from .runner import JourneyRunResult, run
 from .schema import (
     CAPABILITY_LEVELS,
     HONEST_SCOPE,
@@ -57,6 +58,9 @@ from .selector import select_lane
 from .update import render_update_md, update_map
 
 __all__ = [
+    # convenience wrapper
+    "run",
+    "JourneyRunResult",
     # pipeline
     "position",
     "select_lane",

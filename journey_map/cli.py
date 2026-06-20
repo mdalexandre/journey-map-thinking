@@ -30,6 +30,7 @@ from .catalog_loader import load_catalog
 from .gate_alignment import align_gate as _align_gate
 from .position import position as _position
 from .progress import check_progress as _check_progress
+from .runner import run as _run
 from .schema import JourneyLaneSelection, JourneyPosition, JourneyProgressCheck
 from .selector import select_lane as _select_lane
 from .update import update_map as _update_map
@@ -180,6 +181,41 @@ def _cmd_seed(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_run(args: argparse.Namespace) -> int:
+    """Run the 3-stage orientation pipeline and print prose or JSON."""
+    catalog: dict | None = None
+    if getattr(args, "catalog", ""):
+        catalog = load_catalog(args.catalog)
+
+    result = _run(args.goal, catalog=catalog)
+
+    if getattr(args, "out", ""):
+        out_dir = Path(args.out)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        _art.write_json(str(out_dir / "journey_position.json"), result.position.to_dict())
+        _art.write_json(str(out_dir / "journey_lane.json"), result.lane_selection.to_dict())
+        _art.write_json(
+            str(out_dir / "journey_gate_alignment.json"), result.gate_alignment.to_dict()
+        )
+
+    if getattr(args, "json", False):
+        import json as _json
+
+        payload = {
+            "relevance": result.relevance,
+            "lane": result.lane,
+            "next_move": result.next_move,
+            "target_gate": result.target_gate,
+            "can_advance_now": result.can_advance_now,
+            "honest_scope": "PROVISIONAL_JOURNEY_MAP_NO_OUTPUT_QUALITY_GUARANTEE",
+        }
+        print(_json.dumps(payload))
+    else:
+        print(result.summary())
+
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Build the argument parser for the jm CLI."""
     parser = argparse.ArgumentParser(
@@ -234,6 +270,32 @@ def build_parser() -> argparse.ArgumentParser:
     sd = sub.add_parser("seed", help="Seed the global journey map files.")
     sd.add_argument("--global-root", default=default_root, dest="global_root")
     sd.set_defaults(func=_cmd_seed)
+
+    rn = sub.add_parser(
+        "run",
+        help="Orientation shortcut: position -> select-lane -> align-gate in one command.",
+    )
+    rn.add_argument("goal", help="Raw goal string (what do you want to do?).")
+    rn.add_argument(
+        "--catalog",
+        default="",
+        help="Path to a custom lane catalog (JSON or YAML).",
+    )
+    rn.add_argument(
+        "--out",
+        default="",
+        help=(
+            "If set, write journey_position.json, journey_lane.json, and "
+            "journey_gate_alignment.json into this directory."
+        ),
+    )
+    rn.add_argument(
+        "--json",
+        action="store_true",
+        dest="json",
+        help="Print machine-readable JSON instead of prose summary.",
+    )
+    rn.set_defaults(func=_cmd_run)
 
     return parser
 
