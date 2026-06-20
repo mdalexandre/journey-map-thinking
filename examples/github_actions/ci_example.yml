@@ -1,0 +1,50 @@
+name: CI (example)
+
+on: [push, pull_request]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package and dev dependencies
+        run: pip install -e '.[dev]'
+
+      - name: Ruff lint
+        run: ruff check journey_map/ tests/
+
+      - name: Mypy type check
+        run: mypy journey_map/ --ignore-missing-imports
+
+      - name: pytest
+        run: pytest tests/ -q
+
+      - name: CLI smoke test
+        run: |
+          echo "build a CSV ingestion pipeline" > /tmp/raw_goal.txt
+          jm position --raw /tmp/raw_goal.txt --output /tmp/pos.json
+          jm --help
+
+      - name: Privacy grep
+        run: |
+          count=$(grep -rEi \
+            "([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|/home/[A-Za-z0-9._-]+/|/Users/[A-Za-z0-9._-]+/)" \
+            journey_map/ tests/ docs/ examples/ \
+            --include="*.py" --include="*.md" --include="*.toml" \
+            --include="*.yml" --include="*.yaml" --include="*.json" \
+            --include="*.txt" 2>/dev/null | wc -l || true)
+          echo "Privacy grep hits: $count"
+          if [ "$count" -gt 0 ]; then
+            echo "FAIL: private tokens found in published files"
+            exit 1
+          fi

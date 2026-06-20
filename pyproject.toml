@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "journey-map-thinking"
+version = "0.1.0"
+description = "Deterministic journey-map thinking layer for agent pipelines."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+yaml = ["pyyaml>=6.0"]
+dev = ["ruff>=0.4", "mypy>=1.10", "pytest>=8.0", "pytest-cov", "build"]
+
+[project.scripts]
+jm = "journey_map.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["journey_map*"]
+
+[tool.setuptools.package-data]
+journey_map = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+exclude = ["examples/"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.mypy]
+strict = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]

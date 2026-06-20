@@ -1,0 +1,35 @@
+[
+  {
+    "lane_id": "ingest",
+    "name": "Data Ingestion",
+    "description": "Build or fix data ingestion pipelines.",
+    "component": "ingestion",
+    "provisional_level": "L2_ARTIFACT_PRODUCING",
+    "markers": ["ingest", "ingestion", "csv pipeline", "data pipeline", "read from"],
+    "milestones": ["ingestion module", "end-to-end test"],
+    "gates": ["end-to-end test passes"],
+    "progress_artifacts": ["ingestion.py", "test_ingestion.py"]
+  },
+  {
+    "lane_id": "transform",
+    "name": "Data Transform",
+    "description": "Transform and clean data records.",
+    "component": "transform",
+    "provisional_level": "L1_CALLABLE",
+    "markers": ["transform", "clean data", "normalize", "deduplicate", "map records"],
+    "milestones": ["transformer module"],
+    "gates": ["schema validation passes"],
+    "progress_artifacts": ["transformer.py"]
+  },
+  {
+    "lane_id": "load",
+    "name": "Data Load",
+    "description": "Load data into a destination store.",
+    "component": "load",
+    "provisional_level": "L1_CALLABLE",
+    "markers": ["load", "write to", "store", "sink", "persist"],
+    "milestones": ["loader module"],
+    "gates": ["write round-trip test passes"],
+    "progress_artifacts": ["loader.py"]
+  }
+]

@@ -1,0 +1,61 @@
+# Secrets and credentials
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Logs and databases
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.jsonl
+journey_history.jsonl
+completed_milestones.jsonl
+
+# Private pipeline data
+private/
+pipeline_runs/
+.journey_map/
+
+# Optional local-only privacy denylist (never publish the tokens it screens for)
+tests/privacy_denylist.local.txt
+
+# Python build artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
