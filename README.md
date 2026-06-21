@@ -1,5 +1,7 @@
 # journey-map-thinking
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20784642.svg)](https://doi.org/10.5281/zenodo.20784642)
+
 A deterministic, no-LLM journey map thinking layer for agent pipelines.
 
 It locates a task on a configurable lane catalog, selects a lane, aligns the
@@ -155,10 +157,14 @@ preprint working paper (not peer reviewed):
 **Author:** Mario da Silva Alexandre, DLux Digital (Tampa, Florida). More at
 [sincllm.com](https://sincllm.com).
 
+Archived on Zenodo with a citable DOI: [10.5281/zenodo.20784642](https://doi.org/10.5281/zenodo.20784642)
+(concept DOI, always resolves to the latest version).
+
 If you reference this work:
 
 > Mario da Silva Alexandre. "Journey Map Thinking: A Persistent Navigation Layer
 > for Long-Running AI Agents." Preprint working paper, 2026.
+> DOI: 10.5281/zenodo.20784642.
 
 The paper reports two empirical results (a software mechanism verified by two
 independent toolchains, and a frozen-position anchor that returned a powered null

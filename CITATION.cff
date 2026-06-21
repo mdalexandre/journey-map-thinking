@@ -7,8 +7,13 @@ authors:
     given-names: "Mario"
     affiliation: "DLux Digital"
     website: "https://sincllm.com"
+doi: "10.5281/zenodo.20784642"
 repository-code: "https://github.com/mdalexandre/journey-map-thinking"
 url: "https://sincllm.com"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20784642"
+    description: "Concept DOI (always resolves to the latest version)"
 abstract: >-
   Journey Map Thinking (JMT) is a deterministic, LLM-free navigation layer that
   interleaves five typed checkpoints into an existing agent pipeline to track an
