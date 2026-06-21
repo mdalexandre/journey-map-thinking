@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+title: "Journey Map Thinking: A Persistent Navigation Layer for Long-Running AI Agents"
+message: "If you use this work, please cite it as below."
+type: software
+authors:
+  - family-names: "da Silva Alexandre"
+    given-names: "Mario"
+    affiliation: "DLux Digital"
+    website: "https://sincllm.com"
+repository-code: "https://github.com/mdalexandre/journey-map-thinking"
+url: "https://sincllm.com"
+abstract: >-
+  Journey Map Thinking (JMT) is a deterministic, LLM-free navigation layer that
+  interleaves five typed checkpoints into an existing agent pipeline to track an
+  agent's journey position. This repository bundles the preprint working paper
+  with the reference implementation. The work reports a software mechanism
+  verified by two independent toolchains and a frozen-position anchor that
+  returned a powered null against Claude Code's own /compact, and makes no claim
+  of superiority over any existing system.
+license: MIT
+version: "0.1.0"
+date-released: "2026-06-20"
+keywords:
+  - AI agents
+  - agent pipelines
+  - long-horizon agents
+  - navigation state
+  - null result

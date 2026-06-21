@@ -1,0 +1,33 @@
+{
+  "title": "Journey Map Thinking: A Persistent Navigation Layer for Long-Running AI Agents",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "description": "<p>Journey Map Thinking (JMT) is a deterministic, LLM-free navigation layer that interleaves five typed checkpoints into an existing agent pipeline to track an agent's journey position (which lane, which milestone, which gate, what proves progress). This record bundles the preprint working paper (paper/Journey_Map_Thinking.pdf) with the reference implementation (the journey-map-thinking Python package).</p><p>The paper reports two empirical results: a software mechanism verified by two independent toolchains (26 of 26 unit tests pass), and a frozen-position anchor tested in a pre-registered, powered, cross-model A/B that returned a null against Claude Code's own /compact (correct-next-action delta 0.000, p=1.000; held-place delta +0.042, p=0.819). An 11-metric project-level evaluation (M1 through M11) is specified as future work. The work makes no claim of superiority over any existing system.</p><p>Preprint working paper, not peer reviewed. honest_scope: PROVISIONAL.</p>",
+  "creators": [
+    { "name": "da Silva Alexandre, Mario", "affiliation": "DLux Digital" }
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "keywords": [
+    "AI agents",
+    "agent pipelines",
+    "long-horizon agents",
+    "navigation state",
+    "deterministic tooling",
+    "LLM agents",
+    "reproducibility",
+    "null result"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/mdalexandre/journey-map-thinking",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://sincllm.com",
+      "relation": "isReferencedBy",
+      "scheme": "url"
+    }
+  ]
+}
