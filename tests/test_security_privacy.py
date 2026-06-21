@@ -45,7 +45,9 @@ def _extra_denylist_tokens() -> list[str]:
 
 # Secret pattern.
 _SECRET_PATTERN = re.compile(
-    r"(api_key|password|bearer|basic_auth|-----BEGIN|ghp_|sk-|AKIA)",
+    # sk- requires the real key shape (sk- plus a long key body); the bare prefix
+    # also matches ordinary English ("task-success", "ask-", "risk-", "disk-").
+    r"(api_key|password|bearer|basic_auth|-----BEGIN|ghp_|\bsk-[A-Za-z0-9_-]{16,}|AKIA)",
     re.IGNORECASE,
 )
 
@@ -69,7 +71,13 @@ _CHECKED_EXTENSIONS = {".py", ".md", ".toml", ".yml", ".yaml", ".json", ".txt", 
 # the privacy-pattern strings as data (test assertions, CI grep commands).
 _EXCLUDED_DIRS = {
     ".git", "__pycache__", ".venv", "dist", "build", ".mypy_cache", ".pytest_cache",
+    ".ruff_cache",
     "tests",  # test files contain pattern strings as string literals.
+    # Gitignored local scratch: pipeline run artifacts and packaging caches that
+    # are never published. They legitimately contain the scanned-for strings as
+    # tool output, so they must not be scanned on a developer's working tree
+    # (a clean CI checkout has none of these, which is why CI stayed green).
+    ".runs", "journey_map_thinking.egg-info",
 }
 
 # Files excluded from the privacy check (contain patterns as shell or regex data).
