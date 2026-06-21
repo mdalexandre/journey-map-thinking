@@ -9,7 +9,13 @@ description = "Deterministic journey-map thinking layer for agent pipelines."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
+authors = [{ name = "Mario da Silva Alexandre" }]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/mdalexandre/journey-map-thinking"
+Paper = "https://github.com/mdalexandre/journey-map-thinking/blob/main/paper/Journey_Map_Thinking.pdf"
+Author = "https://sincllm.com"
 
 [project.optional-dependencies]
 yaml = ["pyyaml>=6.0"]

@@ -1,5 +1,8 @@
 # Research Result: Journey Map vs. Baseline Comparison
 
+Author: Mario da Silva Alexandre, DLux Digital (Tampa, Florida), https://sincllm.com
+Full write-up: `paper/Journey_Map_Thinking.pdf`
+
 honest_scope: PROVISIONAL_RESEARCH_RESULT_NO_QUALITY_GUARANTEE
 scope_walls_certified: false
 
@@ -15,9 +18,9 @@ an agent pipeline than the baseline.
 ## Study design
 
 - 96 trials, split between the journey-map pipeline and the baseline.
-- Primary metric: next-action quality (binary: correct / incorrect).
-- Secondary metric: held-place avoidance (whether the pipeline prevented
-  re-running the same action without new evidence).
+- Primary metric: held-place avoidance (correct_next_action AND reason_preserved
+  AND no_drift, per pre-registration).
+- Secondary metric: next-action quality (binary: correct / incorrect).
 - Verification method: two-clock software verification only. No blind human
   raters, no external audit, no independent lab.
 - Powered at alpha=0.05 with sufficient n to detect a medium-sized effect.

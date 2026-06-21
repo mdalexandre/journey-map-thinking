@@ -144,6 +144,28 @@ Or pass `--global-root` to any CLI command that writes to the map.
 - The milestones labeled M01-M11 in earlier design documents are future work,
   not completed features.
 
+## Research paper
+
+The framing, the formal algorithm, and the honest null result are written up in a
+preprint working paper (not peer reviewed):
+
+- `paper/Journey_Map_Thinking.pdf`: 51 pages, with figures and references.
+- `paper/Journey_Map_Thinking.md`: the same text, readable on GitHub.
+
+**Author:** Mario da Silva Alexandre, DLux Digital (Tampa, Florida). More at
+[sincllm.com](https://sincllm.com).
+
+If you reference this work:
+
+> Mario da Silva Alexandre. "Journey Map Thinking: A Persistent Navigation Layer
+> for Long-Running AI Agents." Preprint working paper, 2026.
+
+The paper reports two empirical results (a software mechanism verified by two
+independent toolchains, and a frozen-position anchor that returned a powered null
+against Claude Code's own /compact) plus an 11-metric evaluation blueprint
+(M1 through M11) that remains future work. It makes no claim of superiority over
+any existing system.
+
 ## Documentation
 
 - `docs/quickstart.md`: full quickstart guide.
