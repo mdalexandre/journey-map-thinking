@@ -20,6 +20,7 @@ private/
 pipeline_runs/
 .journey_map/
 .runs/
+.tailor-session-id
 
 # Optional local-only privacy denylist (never publish the tokens it screens for)
 tests/privacy_denylist.local.txt

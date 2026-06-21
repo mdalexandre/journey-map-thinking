@@ -1,0 +1,27 @@
+name: Docker E2E
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+jobs:
+  docker-e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker test image (no cache)
+        run: docker build --no-cache -f Dockerfile.test -t journey-map:e2e .
+
+      - name: Run e2e script inside container
+        # --network none provides kernel-level network isolation (D3 fix);
+        # -e JOURNEY_MAP_NO_NETWORK=1 is kept for defense-in-depth env-var isolation.
+        run: docker run --rm --network none -e JOURNEY_MAP_NO_NETWORK=1 journey-map:e2e bash scripts/docker_e2e.sh
+
+      - name: Run pytest with no network
+        run: docker run --rm --network none journey-map:e2e pytest -q
+
+      - name: Import smoke check
+        run: docker run --rm journey-map:e2e python -c "import journey_map; print(journey_map.__file__)"

@@ -61,7 +61,12 @@ def _parse_yaml(text: str, source: str) -> list[dict]:  # type: ignore[type-arg]
             "PyYAML is required to load YAML catalogs. "
             "Install it with: pip install 'journey-map-thinking[yaml]'"
         ) from exc
-    data = yaml.safe_load(text)
+    try:
+        data = yaml.safe_load(text)
+    except yaml.YAMLError as exc:
+        raise ValueError(
+            f"catalog at {source!r} is not valid YAML: {exc}"
+        ) from exc
     if not isinstance(data, list):
         raise ValueError(
             f"catalog at {source!r} must be a YAML sequence of lane objects; "

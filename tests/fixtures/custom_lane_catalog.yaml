@@ -1,0 +1,40 @@
+- lane_id: fake_build
+  name: Fake Build Lane
+  description: A fake build lane used only for testing the catalog loader.
+  markers:
+    - build
+    - construct
+    - create
+    - implement
+    - develop
+  milestones:
+    - fake_milestone_1
+  gates:
+    - unit_tests_pass
+  blockers: []
+  owner_dependent: false
+  next_unlocks:
+    - fake_fix
+  claim_boundary: test artifact only
+  progress_artifacts:
+    - fake_output.py
+
+- lane_id: fake_fix
+  name: Fake Fix Lane
+  description: A fake fix lane used only for testing the catalog loader.
+  markers:
+    - fix
+    - repair
+    - debug
+    - patch
+    - correct
+  milestones:
+    - fake_fix_milestone
+  gates:
+    - regression_check
+  blockers: []
+  owner_dependent: false
+  next_unlocks: []
+  claim_boundary: test fix artifact only
+  progress_artifacts:
+    - fake_fix.py

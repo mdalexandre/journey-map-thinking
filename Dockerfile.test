@@ -1,0 +1,36 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PATH=/usr/local/bin:$PATH
+
+WORKDIR /app
+
+# Copy build metadata first for layer caching.
+COPY pyproject.toml README.md ./
+
+# Copy package source and tests (dockerignore filters heavy dirs).
+COPY journey_map/ ./journey_map/
+COPY tests/ ./tests/
+
+# Copy optional directories only if they exist (dockerignore is the safety net).
+COPY examples/ ./examples/
+COPY docs/ ./docs/
+COPY scripts/ ./scripts/
+
+# Install the package with dev and yaml extras, with a fallback for older
+# pyproject.toml setups that may not expose the combined extra key.
+RUN pip install --no-cache-dir -e ".[dev,yaml]" || \
+    (pip install --no-cache-dir -e . && \
+     pip install --no-cache-dir pytest ruff mypy pytest-cov build pyyaml)
+
+# Create a non-root user and switch to it for test execution.
+# Pre-create the pytest cache dir and give testrunner ownership so the
+# cache warning (PytestCacheWarning: could not create cache path /app/.pytest_cache
+# Permission denied) never fires (D1 fix).
+RUN useradd -m -u 1000 testrunner \
+    && mkdir -p /app/.pytest_cache \
+    && chown -R testrunner:testrunner /app/.pytest_cache
+USER testrunner
+
+CMD ["pytest", "-q"]

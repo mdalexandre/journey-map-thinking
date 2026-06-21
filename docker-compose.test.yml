@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  e2e:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      - JOURNEY_MAP_NO_NETWORK=1
+    command: ["bash", "scripts/docker_e2e.sh"]
